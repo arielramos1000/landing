@@ -1,0 +1,8 @@
+﻿{
+  "name": "talhao-chat",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "formidable": "^3.5.1"
+  }
+}

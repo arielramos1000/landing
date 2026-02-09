@@ -1,0 +1,622 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talhão.ai | Inteligência no seu talhão</title>
+    <link rel="icon" type="image/png" href="imagens/logo5.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --brand-600: #16a34a;
+            --brand-700: #15803d;
+            --brand-800: #166534;
+            --ink-900: #0f172a;
+            --surface: #ffffff;
+            --surface-2: #f7f9fb;
+            --border: #e6ecf3;
+            --shadow-soft: 0 20px 60px rgba(15, 23, 42, 0.06);
+        }
+
+        body {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            position: relative;
+            background: radial-gradient(circle at 12% 18%, rgba(22, 101, 52, 0.06), transparent 32%),
+                        radial-gradient(circle at 82% -6%, rgba(22, 101, 52, 0.08), transparent 30%),
+                        linear-gradient(180deg, #ffffff 0%, #cfe8d6 80%);
+            color: var(--ink-900);
+            letter-spacing: -0.01em;
+        }
+
+        .bg-gradient-custom {
+            background: transparent;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:focus-within {
+            border-color: var(--brand-700);
+            box-shadow: 0 0 0 4px rgba(22, 101, 52, 0.12);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0f172a 0%, #166534 100%);
+            color: #ffffff;
+            border: 1px solid #0f172a;
+            transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            opacity: 0.96;
+            box-shadow: 0 16px 38px rgba(15, 23, 42, 0.22);
+        }
+
+        .suggestion-chip {
+            background: #eef7f1;
+            border: 1px solid #cfe8d6;
+            color: #0f172a;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-chip:hover {
+            background: #e2f0e6;
+            border-color: #b3d6c1;
+            color: #0f172a;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.48);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            z-index: 100;
+        }
+
+        .modal-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            opacity: 0;
+            transform: translateY(12px) scale(0.98);
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .modal-backdrop.open .modal-card {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+<body class="text-slate-900">
+    <div id="bg-grid" class="fixed inset-0 z-0 pointer-events-none opacity-20" style="background-image: linear-gradient(rgba(22, 101, 52, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 101, 52, 0.12) 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+    <!-- Navegação -->
+    <nav class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto w-full fixed top-0 left-0 right-0 z-50 bg-transparent">
+        <div class="flex items-center gap-3">
+            <img src="imagens/logo_anuncio.png" alt="Talhão" class="h-16 w-auto" />
+        </div>
+        
+        <div class="hidden md:flex items-center">
+            <button id="open-lead-modal" class="suggestion-chip bg-white px-6 py-2 rounded-full text-sm font-medium shadow-sm">
+                Quero conhecer mais
+            </button>
+        </div>
+
+        <div class="flex items-center">
+            <button class="bg-brand-700 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-brand-800 transition shadow-sm border border-brand-700/70 hover:-translate-y-0.5">
+                Baixar amostra de relatório
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-20">
+        
+        <!-- Badge Promocional -->
+            <div class="bg-white border border-slate-200 px-4 py-1.5 rounded-full flex items-center gap-2 text-sm shadow-sm mb-12 md:mb-16">
+                <span class="text-brand-700">�o�</span>
+                <span class="text-slate-600"><span class="font-bold">Fique por dentro:</span> Responda o questionário.</span>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVdX3RkNZ3BXtSePwg7NuKKrZSzKBo5GFtfSfNUBJW1DayXQ/viewform" target="_blank" rel="noopener noreferrer" class="text-brand-800 font-semibold hover:underline flex items-center gap-1">Link do questionário <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></a>
+            </div>
+        </div>
+
+        <!-- Título Principal -->
+        <h1 class="text-5xl md:text-7xl font-bold text-center tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-[#0f172a] to-[#166534]">
+            Acesse dezenas de informações do <br class="hidden md:block"> seu talhão a partir do KML
+        </h1>
+        
+        <p class="text-slate-600 text-lg md:text-xl text-center max-w-4xl mb-12 leading-relaxed">
+            Basta subir o arquivo kml da propriedade e solicitar as análises do seu interesse. Você terá o resultado em poucas horas - <strong>de forma gratuita.</strong>
+        </p>
+
+        <!-- Container do Input Central -->
+        <div class="w-full max-w-4xl relative mb-10">
+            <div class="glass-card rounded-3xl p-6 md:p-8 flex flex-col gap-4">
+                <textarea 
+                    id="prompt-input"
+                    placeholder="Ex: Crie um portal de onboarding para novos clientes com dashboard de progresso..."
+                    class="bg-transparent border-none outline-none text-xl text-slate-900 placeholder-slate-500 w-full resize-none h-24 md:h-32 focus:ring-0"
+                ></textarea>
+                
+                <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                    <div class="flex flex-wrap items-center gap-3 text-slate-500">
+                        <button id="kml-upload-button" type="button" title="Anexar arquivo kml" class="hover:text-brand-800 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
+                        </button>
+                        <input id="kml-file-input" name="kml" type="file" accept=".kml" class="hidden" />
+                        <span id="kml-status" class="hidden relative items-center gap-2 text-xs font-semibold text-brand-800 bg-brand-50 border border-brand-100 px-3 py-1 pr-6 rounded-full">
+                            <span class="inline-block h-2 w-2 rounded-full bg-brand-700"></span>
+                            <span id="kml-status-text">Arquivo carregado</span>
+                            <button id="kml-clear-button" type="button" class="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm hover:bg-red-600" aria-label="Remover arquivo">
+                                X
+                            </button>
+                        </span>
+                    </div>
+                    
+                    <button id="open-lead-modal-submit" type="button" class="btn-primary w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sugestões -->
+        <div class="flex flex-col items-center gap-6">
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Exemplos de aplicação</span>
+            <div class="flex flex-wrap justify-center gap-3 max-w-3xl">
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Relatórios técnicos</span>
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Baixar polígonos</span>
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Avaliações de riscos ambientais</span>
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Estudo de topografia</span>
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Mensuração de valor por hectare</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Simples -->
+    <footer class="relative z-10 py-12 px-6 border-t border-slate-200 mt-10">
+        <div class="max-w-7xl mx-auto flex flex-col items-center gap-6 text-slate-500 text-sm">
+            <img src="imagens/logo_anuncio.png" alt="Talh�o" class="h-14 w-auto" />
+            <p>© 2026 Talhão.ai | Todos os direitos reservados.</p>
+            <div class="flex gap-8">
+                <a href="#" class="hover:text-brand-800 transition">Privacidade</a>
+                <a href="#" class="hover:text-brand-800 transition">Termos</a>
+                <a href="#" class="hover:text-brand-800 transition">Status</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="lead-modal" class="modal-backdrop" aria-hidden="true">
+        <div class="min-h-screen flex items-center justify-center p-6">
+            <div class="modal-card glass-card w-full max-w-xl rounded-3xl p-8 md:p-10 relative" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title" aria-describedby="lead-modal-desc">
+                <button id="lead-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 transition" aria-label="Fechar">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                <h3 id="lead-modal-title" class="text-3xl font-bold text-slate-900">Quero conhecer mais</h3>
+                <p id="lead-modal-desc" class="text-slate-600 mt-2">Preencha seus dados e entraremos em contato rapidamente.</p>
+
+                <div id="lead-summary" class="hidden mt-5 rounded-2xl border border-slate-200 bg-slate-50/70 p-4 text-left">
+                    <p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Resumo da submissão</p>
+                    <div class="mt-3 grid gap-3 text-sm text-slate-700">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500">Texto informado</span>
+                            <p id="lead-summary-text" class="mt-1 text-slate-700 whitespace-pre-wrap"></p>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500">Arquivo KML</span>
+                            <p id="lead-summary-file" class="mt-1 text-slate-700"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="lead-form" class="mt-6 grid gap-4">
+                    <label class="text-sm font-semibold text-slate-700">
+                        Nome
+                        <input id="lead-name" type="text" name="nome" required class="mt-2 w-full rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-base text-slate-900 focus:border-brand-700 focus:ring-4 focus:ring-brand-700/15 outline-none" placeholder="Seu nome completo">
+                    </label>
+
+                    <label class="text-sm font-semibold text-slate-700">
+                        Whatsapp
+                        <input type="tel" name="whatsapp" required class="mt-2 w-full rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-base text-slate-900 focus:border-brand-700 focus:ring-4 focus:ring-brand-700/15 outline-none" placeholder="(00) 00000-0000">
+                    </label>
+
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <label class="text-sm font-semibold text-slate-700">
+                            Cidade
+                            <input type="text" name="cidade" required class="mt-2 w-full rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-base text-slate-900 focus:border-brand-700 focus:ring-4 focus:ring-brand-700/15 outline-none" placeholder="Sua cidade">
+                        </label>
+
+                        <label class="text-sm font-semibold text-slate-700">
+                            Estado
+                            <input type="text" name="estado" required class="mt-2 w-full rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-base text-slate-900 focus:border-brand-700 focus:ring-4 focus:ring-brand-700/15 outline-none" placeholder="UF">
+                        </label>
+                    </div>
+
+                    <button id="lead-submit-button" type="submit" class="btn-primary mt-2 w-full rounded-2xl py-3 text-base font-semibold">
+                        Enviar
+                    </button>
+                    <p id="lead-form-status" class="mt-3 hidden text-sm text-red-600"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="thank-you-modal" class="modal-backdrop" aria-hidden="true">
+        <div class="min-h-screen flex items-center justify-center p-6">
+            <div class="modal-card glass-card w-full max-w-xl rounded-3xl p-8 md:p-10 relative" role="dialog" aria-modal="true" aria-labelledby="thank-you-title" aria-describedby="thank-you-desc">
+                <button id="thank-you-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 transition" aria-label="Fechar">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                <h3 id="thank-you-title" class="text-3xl font-bold text-slate-900">Obrigado!</h3>
+                <p id="thank-you-desc" class="text-slate-600 mt-3">
+                    Aguarde para conhecer todo o potencial da inteligência artificial aplicada ao ramo imobiliário rural.
+                </p>
+
+                <button id="thank-you-action" type="button" class="btn-primary mt-6 w-full rounded-2xl py-3 text-base font-semibold">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funcionalidade básica para dar interatividade ao input
+        const textarea = document.querySelector('textarea');
+        textarea.addEventListener('focus', () => {
+            console.log('Focado no input de prompt');
+        });
+
+        const promptInput = document.getElementById('prompt-input');
+        const typingPhrases = [
+            'Ex: Gere relatórios técnicos do seu talhão em minutos.',
+            'Ex: Baixe polígonos do KML e visualize áreas críticas.',
+            'Ex: Avalie riscos ambientais e preço por hectare rapidamente.'
+        ];
+
+        let typingIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingTimeout = null;
+
+        const runTypingEffect = () => {
+            if (!promptInput) {
+                return;
+            }
+
+            if (document.activeElement === promptInput || promptInput.value.trim().length > 0) {
+                typingTimeout = setTimeout(runTypingEffect, 250);
+                return;
+            }
+
+            const fullText = typingPhrases[typingIndex];
+
+            if (!isDeleting) {
+                charIndex += 1;
+                promptInput.setAttribute('placeholder', fullText.slice(0, charIndex));
+                if (charIndex >= fullText.length) {
+                    isDeleting = true;
+                    typingTimeout = setTimeout(runTypingEffect, 1200);
+                    return;
+                }
+                typingTimeout = setTimeout(runTypingEffect, 70);
+                return;
+            }
+
+            charIndex -= 1;
+            promptInput.setAttribute('placeholder', fullText.slice(0, Math.max(0, charIndex)));
+
+            if (charIndex <= 0) {
+                isDeleting = false;
+                typingIndex = (typingIndex + 1) % typingPhrases.length;
+                typingTimeout = setTimeout(runTypingEffect, 350);
+                return;
+            }
+
+            typingTimeout = setTimeout(runTypingEffect, 40);
+        };
+
+        runTypingEffect();
+
+        const kmlUploadButton = document.getElementById('kml-upload-button');
+        const kmlInput = document.getElementById('kml-file-input');
+        const kmlStatus = document.getElementById('kml-status');
+        const kmlStatusText = document.getElementById('kml-status-text');
+        const kmlClearButton = document.getElementById('kml-clear-button');
+        const submitModalButton = document.getElementById('open-lead-modal-submit');
+        const leadSummary = document.getElementById('lead-summary');
+        const leadSummaryText = document.getElementById('lead-summary-text');
+        const leadSummaryFile = document.getElementById('lead-summary-file');
+        const openModalButton = document.getElementById('open-lead-modal');
+        const leadModal = document.getElementById('lead-modal');
+        const closeModalButton = document.getElementById('lead-modal-close');
+        const leadForm = document.getElementById('lead-form');
+        const leadNameInput = document.getElementById('lead-name');
+        const leadSubmitButton = document.getElementById('lead-submit-button');
+        const leadFormStatus = document.getElementById('lead-form-status');
+        const thankYouModal = document.getElementById('thank-you-modal');
+        const thankYouClose = document.getElementById('thank-you-close');
+        const thankYouAction = document.getElementById('thank-you-action');
+
+        let selectedKmlName = '';
+
+        const updateLeadSummary = () => {
+            if (!leadSummaryText || !leadSummaryFile) {
+                return;
+            }
+
+            const promptValue = promptInput?.value.trim();
+            leadSummaryText.textContent = promptValue && promptValue.length > 0
+                ? promptValue
+                : 'Nenhum texto informado.';
+            leadSummaryFile.textContent = selectedKmlName
+                ? selectedKmlName
+                : 'Nenhum arquivo selecionado.';
+        };
+
+        const updateKmlStatus = () => {
+            if (!kmlStatus || !kmlStatusText) {
+                return;
+            }
+
+            if (selectedKmlName) {
+                kmlStatusText.textContent = `Arquivo carregado: ${selectedKmlName}`;
+                kmlStatus.classList.remove('hidden');
+                kmlStatus.classList.add('inline-flex');
+            } else {
+                kmlStatus.classList.add('hidden');
+                kmlStatus.classList.remove('inline-flex');
+                kmlStatusText.textContent = 'Arquivo carregado';
+            }
+        };
+
+        const setLeadFormStatus = (message) => {
+            if (!leadFormStatus) {
+                return;
+            }
+
+            leadFormStatus.textContent = message;
+            leadFormStatus.classList.remove('hidden');
+        };
+
+        const openLeadModal = (options = {}) => {
+            if (!leadModal) {
+                return;
+            }
+
+            const { showSummary = false } = options;
+            if (leadSummary) {
+                if (showSummary) {
+                    updateLeadSummary();
+                    leadSummary.classList.remove('hidden');
+                } else {
+                    leadSummary.classList.add('hidden');
+                }
+            }
+
+            if (leadFormStatus) {
+                leadFormStatus.textContent = '';
+                leadFormStatus.classList.add('hidden');
+            }
+
+            leadModal.classList.add('open');
+            leadModal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-open');
+            setTimeout(() => {
+                leadNameInput?.focus();
+            }, 80);
+        };
+
+        const closeLeadModal = () => {
+            leadModal.classList.remove('open');
+            leadModal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-open');
+        };
+
+        const openThankYouModal = () => {
+            if (!thankYouModal) {
+                return;
+            }
+
+            thankYouModal.classList.add('open');
+            thankYouModal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-open');
+        };
+
+        const closeThankYouModal = () => {
+            if (!thankYouModal) {
+                return;
+            }
+
+            thankYouModal.classList.remove('open');
+            thankYouModal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-open');
+        };
+
+        openModalButton?.addEventListener('click', () => openLeadModal({ showSummary: false }));
+        submitModalButton?.addEventListener('click', () => openLeadModal({ showSummary: true }));
+        closeModalButton?.addEventListener('click', closeLeadModal);
+        thankYouClose?.addEventListener('click', closeThankYouModal);
+        thankYouAction?.addEventListener('click', closeThankYouModal);
+
+        kmlUploadButton?.addEventListener('click', () => {
+            kmlInput?.click();
+        });
+
+        kmlInput?.addEventListener('change', () => {
+            const file = kmlInput.files && kmlInput.files.length > 0 ? kmlInput.files[0] : null;
+            selectedKmlName = file ? file.name : '';
+            if (kmlUploadButton && selectedKmlName) {
+                kmlUploadButton.setAttribute('title', `Arquivo selecionado: ${selectedKmlName}`);
+            }
+            updateLeadSummary();
+            updateKmlStatus();
+        });
+
+        kmlClearButton?.addEventListener('click', () => {
+            selectedKmlName = '';
+            if (kmlInput) {
+                kmlInput.value = '';
+            }
+            if (kmlUploadButton) {
+                kmlUploadButton.setAttribute('title', 'Anexar arquivo kml');
+            }
+            updateLeadSummary();
+            updateKmlStatus();
+        });
+
+        leadModal?.addEventListener('click', (event) => {
+            if (event.target === leadModal) {
+                closeLeadModal();
+            }
+        });
+
+        thankYouModal?.addEventListener('click', (event) => {
+            if (event.target === thankYouModal) {
+                closeThankYouModal();
+            }
+        });
+
+        leadForm?.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            if (!leadForm) {
+                return;
+            }
+
+            if (!kmlInput || !kmlInput.files || kmlInput.files.length === 0) {
+                setLeadFormStatus('Anexe o arquivo KML para continuar.');
+                return;
+            }
+
+            const formData = new FormData(leadForm);
+            if (promptInput && promptInput.value.trim().length > 0) {
+                formData.append('prompt_text', promptInput.value.trim());
+            }
+            formData.append('kml', kmlInput.files[0]);
+
+            if (leadSubmitButton) {
+                leadSubmitButton.disabled = true;
+                leadSubmitButton.textContent = 'Enviando...';
+            }
+
+            if (leadFormStatus) {
+                leadFormStatus.textContent = '';
+                leadFormStatus.classList.add('hidden');
+            }
+
+            try {
+                const response = await fetch('/api/lead', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const data = await response.json().catch(() => ({}));
+                    const message = data && data.error ? data.error : 'Não foi possível enviar. Tente novamente.';
+                    setLeadFormStatus(message);
+                    return;
+                }
+
+                closeLeadModal();
+                openThankYouModal();
+                leadForm.reset();
+                if (promptInput) {
+                    promptInput.value = '';
+                }
+                selectedKmlName = '';
+                if (kmlInput) {
+                    kmlInput.value = '';
+                }
+                if (kmlUploadButton) {
+                    kmlUploadButton.setAttribute('title', 'Anexar arquivo kml');
+                }
+                updateLeadSummary();
+                updateKmlStatus();
+            } catch (error) {
+                setLeadFormStatus('Não foi possível enviar. Verifique sua conexão e tente novamente.');
+            } finally {
+                if (leadSubmitButton) {
+                    leadSubmitButton.disabled = false;
+                    leadSubmitButton.textContent = 'Enviar';
+                }
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                if (leadModal.classList.contains('open')) {
+                    closeLeadModal();
+                }
+                if (thankYouModal?.classList.contains('open')) {
+                    closeThankYouModal();
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
