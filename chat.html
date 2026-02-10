@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -46,9 +46,18 @@
             position: relative;
             background: radial-gradient(circle at 12% 18%, rgba(22, 101, 52, 0.06), transparent 32%),
                         radial-gradient(circle at 82% -6%, rgba(22, 101, 52, 0.08), transparent 30%),
-                        linear-gradient(180deg, #ffffff 0%, #cfe8d6 80%);
+                        linear-gradient(180deg, #ffffff 0%, #14532d 75%);
             color: var(--ink-900);
             letter-spacing: -0.01em;
+        }
+
+        .font-mono {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         .bg-gradient-custom {
@@ -94,6 +103,18 @@
             background: #e2f0e6;
             border-color: #b3d6c1;
             color: #0f172a;
+        }
+
+        .suggestion-chip--dark {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+        }
+
+        .suggestion-chip--dark:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #ffffff;
         }
 
         .modal-backdrop {
@@ -157,7 +178,11 @@
         
         <!-- Badge Promocional -->
             <div class="bg-white border border-slate-200 px-4 py-1.5 rounded-full flex items-center gap-2 text-sm shadow-sm mb-12 md:mb-16">
-                <span class="text-brand-700"></span>
+                <svg class="h-4 w-4 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 11v2a1 1 0 0 0 1 1h3l4 4V6l-4 4H5a1 1 0 0 0-1 1z" />
+                    <path d="M16.5 8.5a4 4 0 0 1 0 7" />
+                    <path d="M19 6a7 7 0 0 1 0 12" />
+                </svg>
                 <span class="text-slate-600"><span class="font-bold">Fique por dentro:</span> Responda o questionário.</span>
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVdX3RkNZ3BXtSePwg7NuKKrZSzKBo5GFtfSfNUBJW1DayXQ/viewform" target="_blank" rel="noopener noreferrer" class="text-brand-800 font-semibold hover:underline flex items-center gap-1">Link do questionário <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></a>
             </div>
@@ -167,8 +192,12 @@
         <h1 class="text-5xl md:text-7xl font-bold text-center tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-[#0f172a] to-[#166534]">
             Acesse dezenas de informações do <br class="hidden md:block"> seu talhão a partir do KML
         </h1>
+
+        <div class="w-screen overflow-hidden border-y border-slate-200 bg-white py-3" style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%);">
+            <div id="ticker" class="flex whitespace-nowrap animate-[marquee_20s_linear_infinite] gap-12 text-xs font-mono font-bold text-black"></div>
+        </div>
         
-        <p class="text-slate-600 text-lg md:text-xl text-center max-w-4xl mb-12 leading-relaxed">
+        <p class="text-white text-lg md:text-xl text-center max-w-4xl my-6 md:my-8 leading-relaxed">
             Basta subir o arquivo kml da propriedade e solicitar as análises do seu interesse. Você terá o resultado em poucas horas - <strong>de forma gratuita.</strong>
         </p>
 
@@ -205,27 +234,27 @@
 
         <!-- Sugestões -->
         <div class="flex flex-col items-center gap-6">
-            <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Exemplos de aplicação</span>
+            <span class="text-xs font-bold uppercase tracking-widest text-white">Exemplos de aplicação</span>
             <div class="flex flex-wrap justify-center gap-3 max-w-3xl">
-                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Relatórios técnicos</span>
-                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Baixar polígonos</span>
-                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Avaliações de riscos ambientais</span>
-                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Estudo de topografia</span>
-                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Mensuração de valor por hectare</span>
+                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Relatórios técnicos</span>
+                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Baixar polígonos</span>
+                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Avaliações de riscos ambientais</span>
+                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Estudo de topografia</span>
+                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Mensuração de valor por hectare</span>
             </div>
         </div>
 
     </main>
 
     <!-- Footer Simples -->
-    <footer class="relative z-10 py-12 px-6 border-t border-slate-200 mt-10">
-        <div class="max-w-7xl mx-auto flex flex-col items-center gap-6 text-slate-500 text-sm">
-            <img src="imagens/logo_anuncio.png" alt="Talh�o" class="h-14 w-auto" />
+    <footer class="relative z-10 py-12 px-6 border-t border-white/20 mt-10">
+        <div class="max-w-7xl mx-auto flex flex-col items-center gap-6 text-white text-sm">
+            <img src="imagens/logo6.png" alt="Talh�o" class="h-14 w-auto" />
             <p>© 2026 Talhão.ai | Todos os direitos reservados.</p>
             <div class="flex gap-8">
-                <a href="#" class="hover:text-brand-800 transition">Privacidade</a>
-                <a href="#" class="hover:text-brand-800 transition">Termos</a>
-                <a href="#" class="hover:text-brand-800 transition">Status</a>
+                <a href="#" class="hover:text-white transition">Privacidade</a>
+                <a href="#" class="hover:text-white transition">Termos</a>
+                <a href="#" class="hover:text-white transition">Status</a>
             </div>
         </div>
     </footer>
@@ -366,6 +395,13 @@
         };
 
         runTypingEffect();
+
+        const ticker = document.getElementById('ticker');
+        if (ticker) {
+            ticker.innerHTML = Array.from({ length: 10 }, () => (
+                `<span>PREÇO/HECTARE: R$ 45.769 // ALTITUDE: 1.187m ALTA // DECLIVIDADE MÉDIA: 4,7% // MATRÍCULA: Registrada // APROVEITAMENTO DA ÁREA: 68,5% // DISTÂNCIA ATÉ SÃO PAULO: 285km // RISCO DE GEADA: Médio // TIPO DE SOLO: Latossolo vermelho // TEMPERATURA MÉDIA: 18,5°C </span>`
+            )).join('');
+        }
 
         const kmlUploadButton = document.getElementById('kml-upload-button');
         const kmlInput = document.getElementById('kml-file-input');
@@ -606,7 +642,6 @@
     </script>
 </body>
 </html>
-
 
 
 
