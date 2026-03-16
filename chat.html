@@ -17,9 +17,9 @@
                             50: '#f0fdf4',
                             100: '#dcfce7',
                             200: '#bbf7d0',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
+                            600: '#2b664f',
+                            700: '#2b664f',
+                            800: '#2b664f',
                             900: '#14532d',
                         }
                     }
@@ -29,14 +29,22 @@
     </script>
     <style>
         :root {
-            --brand-600: #16a34a;
-            --brand-700: #15803d;
-            --brand-800: #166534;
+            --brand-50: #f0fdf4;
+            --brand-100: #dcfce7;
+            --brand-200: #bbf7d0;
+            --brand-400: #4ade80;
+            --brand-500: #22c55e;
+            --brand-600: #2b664f;
+            --brand-700: #2b664f;
+            --brand-800: #2b664f;
+            --brand-900: #14532d;
             --ink-900: #0f172a;
             --surface: #ffffff;
-            --surface-2: #f7f9fb;
+            --surface-2: #f3f4f6;
             --border: #e6ecf3;
             --shadow-soft: 0 20px 60px rgba(15, 23, 42, 0.06);
+            --panel-bg: linear-gradient(180deg, #f5f5f6 0%, #ededf0 100%);
+            --panel-border: #e4e7eb;
         }
 
         body {
@@ -44,9 +52,7 @@
             margin: 0;
             overflow-x: hidden;
             position: relative;
-            background: radial-gradient(circle at 12% 18%, rgba(22, 101, 52, 0.06), transparent 32%),
-                        radial-gradient(circle at 82% -6%, rgba(22, 101, 52, 0.08), transparent 30%),
-                        linear-gradient(180deg, #ffffff 0%, #14532d 75%);
+            background: linear-gradient(180deg, #f3f4f6 0%, #f4f5f7 100%);
             color: var(--ink-900);
             letter-spacing: -0.01em;
         }
@@ -90,6 +96,16 @@
             transform: translateY(-2px);
             opacity: 0.96;
             box-shadow: 0 16px 38px rgba(15, 23, 42, 0.22);
+        }
+
+        .layout-zoom-shell {
+            width: 100%;
+        }
+
+        @media (min-width: 1280px) {
+            .layout-zoom-shell {
+                zoom: 0.9;
+            }
         }
 
         .suggestion-chip {
@@ -155,38 +171,58 @@
     <div id="bg-grid" class="fixed inset-0 z-0 pointer-events-none opacity-20" style="background-image: linear-gradient(rgba(22, 101, 52, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 101, 52, 0.12) 1px, transparent 1px); background-size: 40px 40px;"></div>
 
     <!-- Navegação -->
-    <nav class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto w-full fixed top-0 left-0 right-0 z-50 bg-transparent">
-        <div class="flex items-center gap-3">
-            <img src="imagens/logo_anuncio.png" alt="Talhão" class="h-16 w-auto" />
-        </div>
-        
-        <div class="hidden md:flex items-center">
-            <button id="open-lead-modal" class="suggestion-chip bg-white px-6 py-2 rounded-full text-sm font-medium shadow-sm">
-                Quero conhecer mais
-            </button>
-        </div>
-
-        <div class="flex items-center">
-            <button class="bg-brand-700 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-brand-800 transition shadow-sm border border-brand-700/70 hover:-translate-y-0.5">
-                Baixar amostra de relatório
-            </button>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <main class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-20">
-        
-        <!-- Badge Promocional -->
-            <div class="bg-white border border-slate-200 px-4 py-1.5 rounded-full flex items-center gap-2 text-sm shadow-sm mb-12 md:mb-16">
-                <svg class="h-4 w-4 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M4 11v2a1 1 0 0 0 1 1h3l4 4V6l-4 4H5a1 1 0 0 0-1 1z" />
-                    <path d="M16.5 8.5a4 4 0 0 1 0 7" />
-                    <path d="M19 6a7 7 0 0 1 0 12" />
-                </svg>
-                <span class="text-slate-600"><span class="font-bold">Fique por dentro:</span> Responda o questionário.</span>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVdX3RkNZ3BXtSePwg7NuKKrZSzKBo5GFtfSfNUBJW1DayXQ/viewform" target="_blank" rel="noopener noreferrer" class="text-brand-800 font-semibold hover:underline flex items-center gap-1">Link do questionário <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></a>
+    <div class="layout-zoom-shell">
+    <header id="site-header" class="sticky top-0 z-40 pt-3 sm:pt-4">
+        <div class="w-full max-w-none mx-auto px-4 sm:px-6 xl:px-[160px] relative" id="header-inner">
+            <div class="h-14 xl:h-20 rounded-2xl xl:rounded-full border border-slate-200 bg-slate-100/95 shadow-sm px-3 sm:px-4 xl:px-6 grid grid-cols-[auto_1fr_auto] items-center gap-3 xl:gap-6">
+                <div class="flex h-full items-center gap-2">
+                    <img src="imagens/logo_anuncio.png" alt="Logo Talhão.ai" class="block h-10 xl:h-20 w-auto object-contain xl:translate-y-[5px]" />
+                </div>
+                <nav class="hidden lg:flex items-center justify-center gap-8 xl:gap-14">
+                    <button data-menu="products" class="nav-menu-btn inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-transparent text-lg font-bold transition-all text-slate-900 hover:text-brand-800 hover:bg-white/70">
+                        Soluções <svg class="menu-chevron w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <button data-menu="applications" class="nav-menu-btn inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-transparent text-lg font-bold transition-all text-slate-900 hover:text-brand-800 hover:bg-white/70">
+                        Aplicações <svg class="menu-chevron w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <button data-menu="resources" class="nav-menu-btn inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-transparent text-lg font-bold transition-all text-slate-900 hover:text-brand-800 hover:bg-white/70">
+                        Recursos <svg class="menu-chevron w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                </nav>
+                <div class="flex items-center gap-2 sm:gap-6">
+                    <button id="open-lead-modal" class="inline-flex items-center justify-center rounded-full bg-brand-800 hover:bg-brand-900 text-white px-4 xl:px-8 h-9 xl:h-12 text-sm xl:text-lg font-black transition-colors">Testar solução</button>
+                </div>
+            </div>
+            <div class="mt-2 lg:hidden flex items-center gap-2 overflow-x-auto pb-1" style="-ms-overflow-style:none;scrollbar-width:none;">
+                <button data-menu="products" class="mobile-nav-btn inline-flex shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-slate-100/80 text-sm font-bold transition-all text-slate-900 hover:text-brand-800">
+                    Soluções <svg class="menu-chevron w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <button data-menu="applications" class="mobile-nav-btn inline-flex shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-slate-100/80 text-sm font-bold transition-all text-slate-900 hover:text-brand-800">
+                    Aplicações <svg class="menu-chevron w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <button data-menu="resources" class="mobile-nav-btn inline-flex shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-slate-100/80 text-sm font-bold transition-all text-slate-900 hover:text-brand-800">
+                    Recursos <svg class="menu-chevron w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+            </div>
+            <div id="header-dropdown" class="hidden absolute left-1/2 -translate-x-1/2 w-[calc(100%-1rem)] lg:w-2/3 z-50" style="top:calc(100% + 10px)">
+                <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-2xl overflow-hidden">
+                    <div class="px-5 sm:px-8 py-4 sm:py-5 border-b border-slate-200">
+                        <h3 id="dropdown-title" class="text-xl sm:text-2xl font-black text-slate-900"></h3>
+                    </div>
+                    <div id="dropdown-grid" class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4"></div>
+                    <div class="px-5 sm:px-6 pb-4 pt-1 flex items-center gap-1.5 text-xs text-slate-400 font-medium select-none">
+                        Esta é uma visualização demo da
+                        <img src="imagens/logo_anuncio.png" alt="talhão.ai" class="h-4 w-auto object-contain inline-block" />
+                    </div>
+                </div>
             </div>
         </div>
+    </header>
+    </div>
+
+    <!-- Hero Section -->
+    <main class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-4">
+        
 
         <!-- Título Principal -->
         <h1 class="text-5xl md:text-7xl font-bold text-center tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-[#0f172a] to-[#166534]">
@@ -197,7 +233,7 @@
             <div id="ticker" class="flex whitespace-nowrap animate-[marquee_20s_linear_infinite] gap-12 text-xs font-mono font-bold text-black"></div>
         </div>
         
-        <p class="text-white text-lg md:text-xl text-center max-w-4xl my-6 md:my-8 leading-relaxed">
+        <p class="text-slate-600 text-lg md:text-xl text-center max-w-4xl my-6 md:my-8 leading-relaxed">
             Basta subir o arquivo kml da propriedade e solicitar as análises do seu interesse. Você terá o resultado em poucas horas - <strong>de forma gratuita.</strong>
         </p>
 
@@ -207,7 +243,7 @@
                 <textarea 
                     id="prompt-input"
                     placeholder="Ex: Crie um portal de onboarding para novos clientes com dashboard de progresso..."
-                    class="bg-transparent border-none outline-none text-xl text-slate-900 placeholder-slate-500 w-full resize-none h-24 md:h-32 focus:ring-0"
+                    class="bg-transparent border-none outline-none text-xl text-slate-900 placeholder-slate-500 w-full resize-none h-36 md:h-48 focus:ring-0"
                 ></textarea>
                 
                 <div class="flex justify-between items-center pt-4 border-t border-slate-100">
@@ -234,27 +270,35 @@
 
         <!-- Sugestões -->
         <div class="flex flex-col items-center gap-6">
-            <span class="text-xs font-bold uppercase tracking-widest text-white">Exemplos de aplicação</span>
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Exemplos de aplicação</span>
             <div class="flex flex-wrap justify-center gap-3 max-w-3xl">
-                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Relatórios técnicos</span>
-                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Baixar polígonos</span>
-                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Avaliações de riscos ambientais</span>
-                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Estudo de topografia</span>
-                <span class="suggestion-chip suggestion-chip--dark inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Mensuração de valor por hectare</span>
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Relatórios técnicos</span>
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Baixar polígonos</span>
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Avaliações de riscos ambientais</span>
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Estudo de topografia</span>
+                <span class="suggestion-chip inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium cursor-default">Mensuração de valor por hectare</span>
             </div>
         </div>
 
     </main>
 
-    <!-- Footer Simples -->
-    <footer class="relative z-10 py-12 px-6 border-t border-white/20 mt-10">
-        <div class="max-w-7xl mx-auto flex flex-col items-center gap-6 text-white text-sm">
-            <img src="imagens/logo6.png" alt="Talh�o" class="h-14 w-auto" />
-            <p>© 2026 Talhão.ai | Todos os direitos reservados.</p>
-            <div class="flex gap-8">
-                <a href="#" class="hover:text-white transition">Privacidade</a>
-                <a href="#" class="hover:text-white transition">Termos</a>
-                <a href="#" class="hover:text-white transition">Status</a>
+    <!-- Footer -->
+    <footer class="relative z-10 pt-10 pb-4 px-4 sm:px-6 xl:px-10">
+        <div class="rounded-[32px] border border-slate-200 bg-slate-100/95 px-5 sm:px-8 py-8 text-slate-900 shadow-xl">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+                <div class="flex flex-col gap-3">
+                    <img src="imagens/logo_anuncio.png" alt="Talhão.ai" class="h-10 w-auto object-contain" />
+                    <p class="text-sm text-slate-600 max-w-xs leading-relaxed">A talhão.ai oferece mais eficiência nas transações imobiliárias rurais em todo o Brasil.</p>
+                </div>
+                <div class="flex gap-8 text-sm font-semibold text-slate-800">
+                    <a href="#" class="hover:text-brand-700 transition-colors">Privacidade</a>
+                    <a href="#" class="hover:text-brand-700 transition-colors">Termos</a>
+                    <a href="#" class="hover:text-brand-700 transition-colors">Status</a>
+                </div>
+            </div>
+            <div class="mt-8 flex flex-col gap-2 border-t border-slate-300 pt-5 text-[10px] font-bold uppercase tracking-widest text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+                <span>São Paulo - Brasil</span>
+                <span>© 2026 talhão.ai | Todos os direitos reservados</span>
             </div>
         </div>
     </footer>
@@ -639,9 +683,119 @@
             }
         });
 
+        // Header dropdown
+        (function () {
+            const iconPaths = {
+                search: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>',
+                map: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>',
+                landmark: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10h1v11H4zm6 0h1v11h-1zm6 0h1v11h-1z"/>',
+                layers: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>',
+                'shield-check': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>',
+                scaling: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>',
+                sparkles: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>',
+                trees: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3C7.5 3 4 7 4 11c0 2.4 1 4.5 2.7 6H17.3C19 15.5 20 13.4 20 11c0-4-3.5-8-8-8zm0 18v-4"/>',
+                info: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>',
+                send: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>',
+                calendar: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
+            };
+            const menuData = {
+                products: {
+                    title: "Soluções",
+                    options: [
+                        { title: "Buscar propriedades", description: "Encontre imóveis rurais ou publique sua fazenda em minutos", icon: "search" },
+                        { title: "Download de polígono", description: "Baixe os limites georreferenciados de qualquer propriedade", icon: "map" },
+                        { title: "Acessar dados do imóvel", description: "Consulte dados fundiários, ambientais e produtivos em um só lugar", icon: "landmark" },
+                        { title: "Histórico de uso e ocupação", description: "Veja a evolução do uso da terra ao longo dos anos", icon: "layers" },
+                        { title: "Relatório técnico personalizado", description: "Gere análises sob medida conforme seu objetivo de compra ou venda", icon: "sparkles" },
+                        { title: "Nível de aptidão para diferentes culturas", description: "Compare a vocação da área para cada tipo de cultura", icon: "trees" },
+                    ]
+                },
+                applications: {
+                    title: "Aplicações",
+                    options: [
+                        { title: "Comprar fazendas", description: "Mais agilidade desde a busca de propriedades até a tomada de decisão", icon: "map" },
+                        { title: "Vender fazendas", description: "Mais transparência e assertividade na precificação e no anúncio da propriedade", icon: "landmark" },
+                        { title: "Due diligence", description: "Checklist técnico-jurídico integrado", icon: "shield-check" },
+                        { title: "Analisar preço por hectare", description: "Benchmark por região, tipo de solo, topografia e aptidão agrícola", icon: "scaling" },
+                        { title: "Monitoramento e avaliação", description: "Acompanhe o desempenho da fazenda e eventuais riscos do ativo", icon: "search" },
+                        { title: "Inteligência de mercado", description: "Analise a evolução agrícola de diferentes regiões", icon: "sparkles" },
+                    ]
+                },
+                resources: {
+                    title: "Recursos",
+                    options: [
+                        { title: "Relatórios técnicos", description: "Relatórios técnicos e personalizados com métricas auditáveis", icon: "search" },
+                        { title: "Mapas multicamadas", description: "Visualização geoespacial avançada", icon: "layers" },
+                        { title: "Biblioteca jurídica", description: "Documentação e modelos de referência", icon: "shield-check" },
+                        { title: "Central de ajuda", description: "Guias e boas práticas de operação", icon: "info" },
+                        { title: "Interações com AI", description: "Conheça mais sobre a propriedade antes de tomar sua decisão", icon: "send" },
+                        { title: "Suporte comercial", description: "Entenda como a tecnologia auxilia a padronizar e otimizar transações imobiliárias rurais", icon: "calendar" },
+                    ]
+                }
+            };
+
+            let activeMenu = null;
+
+            function icon(name) {
+                return `<svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">${iconPaths[name] || iconPaths.search}</svg>`;
+            }
+
+            function updateDropdown() {
+                const dropdown = document.getElementById('header-dropdown');
+                const allBtns = document.querySelectorAll('.nav-menu-btn, .mobile-nav-btn');
+                if (!activeMenu || !menuData[activeMenu]) {
+                    dropdown.classList.add('hidden');
+                    allBtns.forEach(btn => {
+                        btn.querySelector('.menu-chevron')?.classList.remove('rotate-180');
+                        btn.classList.remove('bg-white', 'border-slate-300', 'text-brand-800', 'shadow-sm');
+                        btn.classList.add('border-transparent', 'text-slate-900');
+                    });
+                    return;
+                }
+                const menu = menuData[activeMenu];
+                document.getElementById('dropdown-title').textContent = menu.title;
+                document.getElementById('dropdown-grid').innerHTML = menu.options.map(opt => `
+                    <button onclick="openLeadModal({showSummary:false})" class="w-full flex items-start gap-3 sm:gap-4 rounded-2xl border border-slate-200 bg-white p-3 sm:p-4 text-left hover:border-emerald-200 hover:bg-emerald-50/40 transition-all duration-200">
+                        <div class="w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-slate-100 flex items-center justify-center shrink-0 text-slate-600">${icon(opt.icon)}</div>
+                        <div class="space-y-0.5 sm:space-y-1">
+                            <p class="text-sm sm:text-base font-black text-slate-900 leading-tight">${opt.title}</p>
+                            <p class="text-xs sm:text-sm text-slate-500 leading-snug">${opt.description}</p>
+                        </div>
+                    </button>`).join('');
+                dropdown.classList.remove('hidden');
+                allBtns.forEach(btn => {
+                    const isActive = btn.dataset.menu === activeMenu;
+                    btn.querySelector('.menu-chevron')?.classList.toggle('rotate-180', isActive);
+                    if (isActive) {
+                        btn.classList.add('bg-white', 'border-slate-300', 'text-brand-800', 'shadow-sm');
+                        btn.classList.remove('border-transparent');
+                    } else {
+                        btn.classList.remove('bg-white', 'border-slate-300', 'text-brand-800', 'shadow-sm');
+                        btn.classList.add('border-transparent');
+                    }
+                });
+            }
+
+            document.querySelectorAll('.nav-menu-btn, .mobile-nav-btn').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.stopPropagation();
+                    activeMenu = (activeMenu === btn.dataset.menu) ? null : btn.dataset.menu;
+                    updateDropdown();
+                });
+            });
+
+            document.addEventListener('click', e => {
+                if (!document.getElementById('header-inner').contains(e.target)) {
+                    activeMenu = null;
+                    updateDropdown();
+                }
+            });
+        })();
+
     </script>
 </body>
 </html>
+
 
 
 
